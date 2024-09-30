@@ -10,5 +10,5 @@ import { RadarComponent } from "./radar/radar.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'planet810';
+  title = 'radaver.de';
 }

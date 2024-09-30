@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "planet810": {
+    "radaver.de": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/planet810",
+            "outputPath": "dist/radaver.de",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -66,10 +66,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "planet810:build:production"
+              "buildTarget": "radaver.de:build:production"
             },
             "development": {
-              "buildTarget": "planet810:build:development"
+              "buildTarget": "radaver.de:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'planet810' title`, () => {
+  it(`should have the 'radaver.de' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('planet810');
+    expect(app.title).toEqual('radaver.de');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, planet810');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, radaver.de');
   });
 });
