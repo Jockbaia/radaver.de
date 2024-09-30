@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { RadarComponent } from "./radar/radar.component";
+import { HudComponent } from "./hud/hud.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RadarComponent],
+  imports: [RouterOutlet, HudComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
