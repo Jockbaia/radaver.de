@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 import { Gapless5 } from '@regosen/gapless-5';
 import { AudioService } from '../services/audio.service';
-import { RandomService } from '../services/random.service';
 
 @Component({
-  selector: 'app-radar',
+  selector: 'app-hud',
   standalone: true,
   imports: [],
-  templateUrl: './radar.component.html',
-  styleUrl: './radar.component.scss'
+  templateUrl: './hud.component.html',
+  styleUrl: './hud.component.scss'
 })
-export class RadarComponent {
+export class HudComponent {
 
-  constructor(private _audioService: AudioService, private _randomService: RandomService){}
+  constructor(private _audioService: AudioService){}
 
+  isPlaying: boolean = false;
   crickets: boolean = true;
   
   cricketsAudio = new Gapless5({
@@ -26,6 +26,7 @@ export class RadarComponent {
   });
 
   start() {
+    this.isPlaying = true;
     this.playCrickets();
     this.playWhiteNoise();
   }
