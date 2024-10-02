@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Gapless5 } from '@regosen/gapless-5';
 import { RandomService } from './random.service';
+import { AudioType } from 'ts-audio';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +10,16 @@ export class AudioService {
   constructor(private _randomService: RandomService) { }
 
 
-  play(audio: Gapless5) {
+  play(audio: AudioType) {
     audio.play();
     this.logAudio(audio, 1);
   }
 
-  stop(audio: Gapless5) {
+  stop(audio: AudioType) {
     audio.stop();
   }
 
-  playRepeatWaitIf(audio: Gapless5, keepPlaying: boolean, minR: number = 5, maxR: number = 10, minW: number = 3, maxW: number = 10) { 
+  playRepeatWaitIf(audio: AudioType, keepPlaying: boolean, minR: number = 5, maxR: number = 10, minW: number = 3, maxW: number = 10) { 
     let playAgain = () => {
       if (!keepPlaying) {
         return; 
@@ -27,39 +27,39 @@ export class AudioService {
   
       this.playAndRepeat(audio, this._randomService.randomBetween(minR, maxR));
   
-      audio.onfinishedall = () => {
+      audio.on("end", () => {
         let delay = this._randomService.randomBetween(minW * 1000, maxW * 1000);
         this.logWait(audio, delay/1000);
         setTimeout(playAgain, delay);
-      };
+      });
 
-      audio.onstop = () => {
-        this.logStop(audio);
-      }
+     // audio.onstop = () => {
+     //   this.logStop(audio);
+    //  }
     };
     playAgain();
   }
 
-  playAndRepeat(audio: Gapless5, repetitions: number) {
-    let repeatedTrack = audio.getTrack();
-    for (let i = 0; i < repetitions - 1; i++) {
-      audio.addTrack(repeatedTrack);
-    }
+  playAndRepeat(audio: AudioType, repetitions: number) {
+    //let repeatedTrack = audio.getTrack();
+    //for (let i = 0; i < repetitions - 1; i++) {
+    //  audio.addTrack(repeatedTrack);
+   // }
     audio.play();
     this.logAudio(audio, repetitions);
   }
 
-  logAudio(audio: Gapless5, repetitions = 1) {
+  logAudio(audio: AudioType, repetitions = 1) {
 
-    console.log(`[${this.formatTime()}] ▶️ ${audio.getTrack()} | 🔂 ${repetitions} | 🔁 ${audio.loop}`);
+    console.log(`[${this.formatTime()}] ▶️ ${audio} | 🔂 ${repetitions} | 🔁 ${audio.loop}`);
   }
 
-  logWait(audio: Gapless5, delay: any) {
-    console.log(`[${this.formatTime()}] ▶️ ${audio.getTrack()} | ⏳ ${delay}`);
+  logWait(audio: AudioType, delay: any) {
+    console.log(`[${this.formatTime()}] ▶️ ${audio} | ⏳ ${delay}`);
   }
 
-  logStop(audio: Gapless5) {
-    console.log(`[${this.formatTime()}] ✋ ${audio.getTrack()}`);
+  logStop(audio: AudioType) {
+    console.log(`[${this.formatTime()}] ✋ ${audio}`);
   }
 
   formatTime(): string {

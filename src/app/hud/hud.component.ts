@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Gapless5 } from '@regosen/gapless-5';
+import { Audio, AudioType } from 'ts-audio';
 import { AudioService } from '../services/audio.service';
 
 @Component({
@@ -18,61 +19,61 @@ export class HudComponent {
   frogs: boolean = true;
   birds: boolean = true;
   
-  cricketsAudio = new Gapless5({
-    tracks: ['assets/audio/crickets.wav'],
+  cricketsAudio = Audio({
+    file: "assets/audio/crickets.wav",
   });
 
-  whiteNoiseAudio = new Gapless5({
-    tracks: ['assets/audio/whitenoise.wav'], 
+  whiteNoiseAudio = Audio({
+    file: 'assets/audio/whitenoise.wav', 
     loop: true,
   });
 
-  frog1Audio = new Gapless5({
-    tracks: ['assets/audio/frog1.wav'], 
+  frog1Audio = Audio({
+    file: 'assets/audio/frog1.wav', 
   });
 
-  frog2Audio = new Gapless5({
-    tracks: ['assets/audio/frog2.wav'], 
+  frog2Audio = Audio({
+    file: 'assets/audio/frog2.wav', 
   });
 
-  frog3Audio = new Gapless5({
-    tracks: ['assets/audio/frog3.wav'], 
+  frog3Audio = Audio({
+    file: 'assets/audio/frog3.wav', 
   });
 
-  bgm1Audio = new Gapless5({
-    tracks: ['assets/audio/birds__bg--morning-1.wav'], 
+  bgm1Audio = Audio({
+    file: 'assets/audio/birds__bg--morning-1.wav', 
   });
 
-  bgm2Audio = new Gapless5({
-    tracks: ['assets/audio/birds__bg--morning-2.wav'], 
+  bgm2Audio = Audio({
+    file: 'assets/audio/birds__bg--morning-2.wav', 
   });
 
-  bgm3Audio = new Gapless5({
-    tracks: ['assets/audio/birds__bg--morning-3.wav'], 
+  bgm3Audio = Audio({
+    file: 'assets/audio/birds__bg--morning-3.wav', 
   });
 
-  bgm4Audio = new Gapless5({
-    tracks: ['assets/audio/birds__bg--morning-4.wav'], 
+  bgm4Audio = Audio({
+    file: 'assets/audio/birds__bg--morning-4.wav', 
   });
 
-  bgm5Audio = new Gapless5({
-    tracks: ['assets/audio/birds__bg--morning-5.wav'], 
+  bgm5Audio = Audio({
+    file: 'assets/audio/birds__bg--morning-5.wav', 
   });
 
-  mdm1Audio = new Gapless5({
-    tracks: ['assets/audio/birds__md--morning-1.wav'], 
+  mdm1Audio = Audio({
+    file: 'assets/audio/birds__md--morning-1.wav', 
   });
 
-  mdm2Audio = new Gapless5({
-    tracks: ['assets/audio/birds__md--morning-2.wav'], 
+  mdm2Audio = Audio({
+    file: 'assets/audio/birds__md--morning-2.wav', 
   });
 
-  mdm3Audio = new Gapless5({
-    tracks: ['assets/audio/birds__md--morning-3.wav'], 
+  mdm3Audio = Audio({
+    file: 'assets/audio/birds__md--morning-3.wav', 
   });
 
-  mdm4Audio = new Gapless5({
-    tracks: ['assets/audio/birds__md--morning-4.wav'], 
+  mdm4Audio = Audio({
+    file: 'assets/audio/birds__md--morning-4.wav', 
   });
 
 
@@ -85,7 +86,7 @@ export class HudComponent {
   }
 
   stop() {
-    this.cricketsAudio.onfinishedtrack = () => {this.cricketsAudio.stop()};
+    //this.cricketsAudio.onfinishedtrack = () => {this.cricketsAudio.stop()};
   }
   
   playCrickets() { 
@@ -127,7 +128,6 @@ export class HudComponent {
     const mdm2Delay = Math.random() * 20000;
     const mdm3Delay = Math.random() * 20000;
     const mdm4Delay = Math.random() * 20000;
-    const mdm5Delay = Math.random() * 20000;
   
       setTimeout(() => {
         this._audioService.playRepeatWaitIf(this.bgm1Audio, this.birds, 1, 1, 0, 40);
