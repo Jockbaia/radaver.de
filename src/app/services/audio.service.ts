@@ -9,57 +9,60 @@ export class AudioService {
 
   constructor(private _randomService: RandomService) { }
 
-
-  play(audio: AudioType) {
-    audio.play();
-    this.logAudio(audio, 1);
-  }
-
-  stop(audio: AudioType) {
-    audio.stop();
-  }
-
-  playRepeatWaitIf(audio: AudioType, keepPlaying: boolean, minR: number = 5, maxR: number = 10, minW: number = 3, maxW: number = 10) { 
-    let playAgain = () => {
-      if (!keepPlaying) {
-        return; 
-      }
+  play(
+    name: string,
+    audio: AudioType,
+    restart: boolean = false,
+    minRepetitions: number = 5,
+    maxRepetitions: number = 10,
+    minDelay: number = 3,
+    maxDelay: number = 10,
+    hasDelayOnStart: boolean = true,
+    curRepetitions?: number
+  ) {
+    curRepetitions = curRepetitions ?? this._randomService.randomBetween(minRepetitions, maxRepetitions);
   
-      this.playAndRepeat(audio, this._randomService.randomBetween(minR, maxR));
+    if (hasDelayOnStart) {
+      const waitTime = this._randomService.randomBetween(minDelay / 5, maxDelay / 5) * 1000; 
+      this.logWait(name, audio, waitTime);
+      setTimeout(() => {
+        audio.play();
+        this.logAudio(name, audio, curRepetitions);
+      }, waitTime);
+    } else {
+      audio.play();
+      this.logAudio(name, audio, curRepetitions);
+    }
   
-      audio.on("end", () => {
-        let delay = this._randomService.randomBetween(minW * 1000, maxW * 1000);
-        this.logWait(audio, delay/1000);
-        setTimeout(playAgain, delay);
-      });
-
-     // audio.onstop = () => {
-     //   this.logStop(audio);
-    //  }
-    };
-    playAgain();
+    audio.on("end", () => {
+      if (curRepetitions === 0 && !restart) {
+        return;
+      } 
+      const waitTime = curRepetitions !== 0 ? 0 : this._randomService.randomBetween(minDelay, maxDelay) * 1000;
+      if (curRepetitions === 0) this.logWait(name, audio, waitTime);
+      setTimeout(() => {
+        this.play(name, audio, restart, minRepetitions, maxRepetitions, minDelay, maxDelay, hasDelayOnStart = false, curRepetitions === 0 ? undefined : curRepetitions - 1);
+      }, waitTime);
+    });
   }
 
-  playAndRepeat(audio: AudioType, repetitions: number) {
-    //let repeatedTrack = audio.getTrack();
-    //for (let i = 0; i < repetitions - 1; i++) {
-    //  audio.addTrack(repeatedTrack);
-   // }
-    audio.play();
-    this.logAudio(audio, repetitions);
+  stop(name: string, audio: AudioType) {
+    audio.on("end", () => {
+      this.logStop(name, audio);
+      audio.stop();
+    });
   }
 
-  logAudio(audio: AudioType, repetitions = 1) {
-
-    console.log(`[${this.formatTime()}] ▶️ ${audio} | 🔂 ${repetitions} | 🔁 ${audio.loop}`);
+  logAudio(name: string, audio: AudioType, repetitions = 1) {
+    console.log(`[${this.formatTime()}] ▶️ ${name} | 🔂 ${repetitions} | 🔁 ${audio.loop}`);
   }
 
-  logWait(audio: AudioType, delay: any) {
-    console.log(`[${this.formatTime()}] ▶️ ${audio} | ⏳ ${delay}`);
+  logWait(name: string, audio: AudioType, delay: any) {
+    console.log(`[${this.formatTime()}] ▶️ ${name} | ⏳ ${delay/1000}s`);
   }
 
-  logStop(audio: AudioType) {
-    console.log(`[${this.formatTime()}] ✋ ${audio}`);
+  logStop(name: string, audio: AudioType) {
+    console.log(`[${this.formatTime()}] ✋ ${name}`);
   }
 
   formatTime(): string {
@@ -67,7 +70,6 @@ export class AudioService {
     const hours = now.getHours();
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
-  
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
 }
