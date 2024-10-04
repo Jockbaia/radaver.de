@@ -1,0 +1,37 @@
+@import 'colors.scss';
+
+.clock {
+    &__wrapper {
+        max-width: 180px;
+        background-color: $crimson;
+        padding: 5px;
+        font-family: math;
+        color: $sand;
+        border: 1px solid;
+        border-radius: 40px;
+        position: sticky;
+    }
+
+    &__digits {
+        height: 100%;
+        min-height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+    
+        textarea:focus, input:focus{
+            outline: none;
+        }
+        input {
+            width: 170px;
+            background-color: transparent;
+            font-family: math;
+            color: $sand;
+            border: transparent;
+            font-size: 17px;
+            text-align: center;
+            position: sticky;
+        }
+    }
+}

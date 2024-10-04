@@ -1,0 +1,12 @@
+<div class="clock__wrapper">
+    <div class="clock__digits">
+        @if (!this.editMode) {
+            <div *ngIf="!editMode" (click)="toggleEditor()">{{ currentTime | date: 'dd/MM/yyyy HH:mm:ss' }}</div>
+        } @else {
+            <input *ngIf="editMode" #timeInput [(ngModel)]="editInput" 
+                (blur)="editTime()" 
+                (keydown.enter)="editTime()"
+            >
+        }
+    </div>
+</div>
