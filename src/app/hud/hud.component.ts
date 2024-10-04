@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { Audio } from 'ts-audio';
 import { AudioService } from '../services/audio.service';
 import { DebugComponent } from "./debug/debug.component";
+import { MaestroService } from '../services/maestro.service';
 
 @Component({
   selector: 'app-hud',
@@ -15,6 +16,7 @@ debugMode: boolean = false;
   
   constructor(
     private _audioService: AudioService,
+    private _maestroService: MaestroService
   ){}
 
   isPlaying: boolean = false;
@@ -103,28 +105,86 @@ debugMode: boolean = false;
   }
   
   playCrickets() { 
-    this._audioService.play('crickets', this.cricketsAudio, true, 1, 10, 0, 30);
+    this._audioService.play({
+      name: 'crickets',
+      audio: this.cricketsAudio,
+      restart: true,
+      minRepetitions: 1,
+      maxRepetitions: 10,
+      minDelay: 0,
+      maxDelay: 30
+    });
   }
-
+  
   playWhiteNoise() {
-    this._audioService.play('whitenoise', this.whiteNoiseAudio, true, 0, 0, 0, 0, false);
+    this._audioService.play({
+      name: 'whitenoise',
+      audio: this.whiteNoiseAudio,
+      restart: true,
+      minRepetitions: 0,
+      maxRepetitions: 0,
+      minDelay: 0,
+      maxDelay: 0,
+      hasDelayOnStart: false
+    });
   }
-
+  
   playFrogs() {
-    this._audioService.play('frog1', this.frog1Audio, true, 1, 25, 0, 30);
-    this._audioService.play('frog2', this.frog2Audio, true, 1, 10, 0, 30);
-    this._audioService.play('frog3', this.frog3Audio, true, 1, 15, 0, 30);
+    this._audioService.play({
+      name: 'frog1',
+      audio: this.frog1Audio,
+      restart: true,
+      minRepetitions: 1,
+      maxRepetitions: 25,
+      minDelay: 0,
+      maxDelay: 30
+    });
+  
+    this._audioService.play({
+      name: 'frog2',
+      audio: this.frog2Audio,
+      restart: true,
+      minRepetitions: 1,
+      maxRepetitions: 10,
+      minDelay: 0,
+      maxDelay: 30
+    });
+  
+    this._audioService.play({
+      name: 'frog3',
+      audio: this.frog3Audio,
+      restart: true,
+      minRepetitions: 1,
+      maxRepetitions: 15,
+      minDelay: 0,
+      maxDelay: 30
+    });
   }
-
+  
   playMorningBirds() {
-    this._audioService.play('birds__bg--morning-1', this.bgm1Audio, true, 1, 1, 0, 40);
-    this._audioService.play('birds__bg--morning-2', this.bgm2Audio, true, 1, 1, 0, 40);
-    this._audioService.play('birds__bg--morning-3', this.bgm3Audio, true, 1, 1, 0, 40);
-    this._audioService.play('birds__bg--morning-4', this.bgm4Audio, true, 1, 1, 0, 40);
-    this._audioService.play('birds__bg--morning-5', this.bgm5Audio, true, 1, 1, 0, 40);
-    this._audioService.play('birds__md--morning-1', this.mdm1Audio, true, 1, 1, 0, 40);
-    this._audioService.play('birds__md--morning-2', this.mdm2Audio, true, 1, 1, 0, 40);
-    this._audioService.play('birds__md--morning-3', this.mdm3Audio, true, 1, 1, 0, 40);
-    this._audioService.play('birds__md--morning-4', this.mdm4Audio, true, 1, 1, 0, 40);
+    const birdAudios = [
+      { name: 'birds__bg--morning-1', audio: this.bgm1Audio },
+      { name: 'birds__bg--morning-2', audio: this.bgm2Audio },
+      { name: 'birds__bg--morning-3', audio: this.bgm3Audio },
+      { name: 'birds__bg--morning-4', audio: this.bgm4Audio },
+      { name: 'birds__bg--morning-5', audio: this.bgm5Audio },
+      { name: 'birds__md--morning-1', audio: this.mdm1Audio },
+      { name: 'birds__md--morning-2', audio: this.mdm2Audio },
+      { name: 'birds__md--morning-3', audio: this.mdm3Audio },
+      { name: 'birds__md--morning-4', audio: this.mdm4Audio }
+    ];
+  
+    birdAudios.forEach(({ name, audio }) => {
+      this._audioService.play({
+        name,
+        audio,
+        restart: true,
+        minRepetitions: 1,
+        maxRepetitions: 1,
+        hasDelayOnStart: true,
+        minDelay: 0,
+        maxDelay: 40
+      });
+    });
   }
 }
