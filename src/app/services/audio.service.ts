@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RandomService } from './random.service';
 import { AudioType } from 'ts-audio';
+import { AudioOptions } from '../models/audio-options.model'; 
 
 @Injectable({
   providedIn: 'root'
@@ -9,21 +10,21 @@ export class AudioService {
 
   constructor(private _randomService: RandomService) { }
 
-  play(
-    name: string,
-    audio: AudioType,
-    restart: boolean = false,
-    minRepetitions: number = 5,
-    maxRepetitions: number = 10,
-    minDelay: number = 3,
-    maxDelay: number = 10,
-    hasDelayOnStart: boolean = true,
-    curRepetitions?: number
-  ) {
-    curRepetitions = curRepetitions ?? this._randomService.randomBetween(minRepetitions, maxRepetitions);
+  play(options: AudioOptions) {
+    const {
+      name,
+      audio,
+      restart = false,
+      minRepetitions = 0,
+      maxRepetitions = 0,
+      minDelay = 0,
+      maxDelay = 0,
+      hasDelayOnStart = false,
+      curRepetitions = this._randomService.randomBetween(minRepetitions, maxRepetitions),
+    } = options;
   
     if (hasDelayOnStart) {
-      const waitTime = this._randomService.randomBetween(minDelay / 5, maxDelay / 5) * 1000; 
+      const waitTime = this._randomService.randomBetween(minDelay / 5, maxDelay / 5) * 1000;
       this.logWait(name, audio, waitTime);
       setTimeout(() => {
         audio.play();
@@ -37,11 +38,21 @@ export class AudioService {
     audio.on("end", () => {
       if (curRepetitions === 0 && !restart) {
         return;
-      } 
+      }
       const waitTime = curRepetitions !== 0 ? 0 : this._randomService.randomBetween(minDelay, maxDelay) * 1000;
       if (curRepetitions === 0) this.logWait(name, audio, waitTime);
       setTimeout(() => {
-        this.play(name, audio, restart, minRepetitions, maxRepetitions, minDelay, maxDelay, hasDelayOnStart = false, curRepetitions === 0 ? undefined : curRepetitions - 1);
+        this.play({
+          name,
+          audio,
+          restart,
+          minRepetitions,
+          maxRepetitions,
+          minDelay,
+          maxDelay,
+          hasDelayOnStart: false,
+          curRepetitions: curRepetitions === 0 ? undefined : curRepetitions - 1
+        });
       }, waitTime);
     });
   }
