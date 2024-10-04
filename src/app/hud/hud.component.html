@@ -1,6 +1,6 @@
 <div class="splash__wrapper">
     <div class="hud__wrapper">
-        <img class="splash__logo" src="assets/svg/logo.svg">
+        <img (click)="debugMode = !debugMode" class="splash__logo" src="assets/svg/logo.svg">
     </div>
     <div class="hud__wrapper">
         @if (!this.isPlaying) {
@@ -20,8 +20,9 @@
                 </svg>
             </div>
         }
-        <div class="hud__clock">
-            {{ currentTime | date: 'dd/MM/yyyy HH:mm' }}
-        </div>
     </div>
 </div>
+
+@if (debugMode) {
+    <app-debug></app-debug>
+}

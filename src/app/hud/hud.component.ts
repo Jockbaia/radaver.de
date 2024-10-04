@@ -1,46 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { Audio, AudioType } from 'ts-audio';
+import { Component } from '@angular/core';
+import { Audio } from 'ts-audio';
 import { AudioService } from '../services/audio.service';
-import { TimeService } from '../services/time.service';
-import { Subscription, interval } from 'rxjs';
-import { TimeModel } from '../models/time.model';
-import { CommonModule } from '@angular/common';
+import { DebugComponent } from "./debug/debug.component";
 
 @Component({
   selector: 'app-hud',
   standalone: true,
   templateUrl: './hud.component.html',
   styleUrl: './hud.component.scss',
-  imports: [CommonModule]
+  imports: [DebugComponent]
 })
-export class HudComponent implements OnInit {
+export class HudComponent {
+debugMode: boolean = false;
   
-  $currentTime?: Subscription;
-  currentTime?: any;
-
   constructor(
     private _audioService: AudioService,
-    private _timeService: TimeService
   ){}
-
-  ngOnInit(): void {
-      this.$currentTime = interval(1000).subscribe(() => {
-      this.currentTime = new Date(
-        this._timeService.getCurrentTime().year, 
-        this._timeService.getCurrentTime().month - 1, 
-        this._timeService.getCurrentTime().day, 
-        this._timeService.getCurrentTime().hour, 
-        this._timeService.getCurrentTime().minute, 
-        this._timeService.getCurrentTime().second
-      );
-    });
-  }
-
-  ngOnDestroy(): void {
-    if (this.$currentTime) {
-      this.$currentTime.unsubscribe();
-    }
-  }
 
   isPlaying: boolean = false;
   hasNoise: boolean = false;

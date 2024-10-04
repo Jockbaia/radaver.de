@@ -37,16 +37,6 @@
         justify-content: center;
         flex-direction: column;
     }
-    
-    &__clock {
-        height: 100%;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        font-family: none;
-        font-size: 17px;
-        color: $crimson;
-    }
 }
 
 #hud__playing {
