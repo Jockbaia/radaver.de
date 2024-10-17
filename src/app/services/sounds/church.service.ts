@@ -13,54 +13,18 @@ export class ChurchService {
 
   // ChurchBellKonstanz.wav by edsward -- https://freesound.org/s/341866/ -- License: Creative Commons 0
 
-  bell1 = Audio({
-    file: 'assets/audio/church/bell.mp3',
-    volume: 0.6
-  });
-  bell2 = Audio({
-    file: 'assets/audio/church/bell.mp3',
-    volume: 0.6
-  });
-  bell3 = Audio({
-    file: 'assets/audio/church/bell.mp3',
-    volume: 0.6
-  });
-  
   hourlyBell(counter: number) {
-    let time: TimeModel = this._timeService.getTime();
+    const time: TimeModel = this._timeService.getTime();
     if(counter > 13) counter = counter - 12;
     if(time.hour >= 7 && time.hour <=22){
-      let i = 0;
-      const nextBell = () => {
-        if (counter > 0) {
-          if (i === 0) {
-            this.bell1.play();
-            this.bell2.stop();
-            this._audioService.play({
-              name: 'bell--1',
-              audio: this.bell1,
-            });
-          } else if (i === 1) {
-            this.bell2.play();
-            this.bell3.stop();
-            this._audioService.play({
-              name: 'bell--2',
-              audio: this.bell2,
-            });
-          } else {
-            this.bell3.play();
-            this.bell1.stop();
-            this._audioService.play({
-              name: 'bell--3',
-              audio: this.bell3,
-            });
-          }
-          i = (i + 1) % 3;
-          counter--;
-          setTimeout(nextBell, 3000);
-        }
-      };
-      nextBell();
+      const bell = Audio({
+        file: `assets/audio/church/bells--${counter}.mp3`,
+        volume: 0.6
+      });
+      this._audioService.play({
+        name: `bell--${counter}`,
+        audio: bell,
+      });
     }
   }
 }
