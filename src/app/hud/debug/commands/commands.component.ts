@@ -16,7 +16,7 @@ export class CommandsComponent {
   ) {}
 
   hourlyBell() {
-    this._churchService.hourlyBell(8);
+    this._churchService.hourlyBell(this._timeService.getTime().hour);
   }
 
 }
